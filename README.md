@@ -18,6 +18,8 @@ The ``events`` endpoind is used to list and create events.
 - [x] Create an update method, so events can be changed.
 - [ ] Create a remove method, so events can be removed.
 
+<br>
+
 ### :book: Get events (get method)
 The ``get endpoints`` do not use any body text.
 - ``/api/events`` returns all events.
@@ -30,7 +32,7 @@ The ``get endpoints`` do not use any body text.
 ##### :heavy_check_mark: On succes:
 ``200 OK`` - returns a JSON object with all/specific event(s).
 
-<br><br>
+<br>
 
 ### :pencil2: Create events (post method)
 The ``post endpoints`` **require** all body data as described.
@@ -66,7 +68,7 @@ The ``post endpoints`` **require** all body data as described.
 ##### :heavy_check_mark: On succes:
 ``201 Created`` - returns a JSON object with the created event data.
 
-<br><br>
+<br>
 
 ### :pencil: Update events (put method)
 The ``put endpoints`` do not require anything in the body. Only add the fields you want to change to the body.
