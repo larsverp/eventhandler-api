@@ -21,3 +21,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::get('events', 'EventsController@index');
 Route::get('events/{id}', 'EventsController@show');
 Route::post('events', 'EventsController@create');
+Route::put('events/{id}', 'EventsController@update');

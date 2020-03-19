@@ -30,4 +30,24 @@ class EventsController extends Controller
         Events::create($ValidateAttributes);
         return response($ValidateAttributes, 201);
     }
+
+    public function update($id){
+        $event = Events::FindOrFail($id);
+        $ValidateAttributes = request()->validate([
+            'title' => 'max:191|string|unique:events,title',
+            'description' => 'string',
+            'date' => 'date|after_or_equal:today',
+            'thumbnail' => 'max:191|active_url',
+            'seats' => 'integer|min:0',
+            'postal_code' => 'postal_code:NL,BE,DE',
+            'hnum' => 'max:191|string',
+            'notification' => 'boolean'
+        ]);
+        if($event->update($ValidateAttributes)){
+            return $event;
+        }
+        else{
+            return response($event->id, 400);
+        }
+    }
 }
