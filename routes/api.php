@@ -18,7 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('events', 'EventsController@index');
-Route::get('events/{id}', 'EventsController@show');
-Route::post('events', 'EventsController@create');
-Route::put('events/{id}', 'EventsController@update');
+#TODO test if  the middleware routes checks are working.
+Route::get('events', 'EventsController@index')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
+Route::get('events/{id}', 'EventsController@show')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
+Route::post('events', 'EventsController@create')->middleware(['auth:api', 'scope:rockstar']);
+Route::put('events/{id}', 'EventsController@update')->middleware(['auth:api', 'scope:rockstar']);
