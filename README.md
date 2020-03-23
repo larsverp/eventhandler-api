@@ -3,7 +3,9 @@ API used to communicate between application and database. Build for RockStars IT
 
 The API is reachable via ``URL/api/{endpoint}``. **The returned data is always in JSON format.**
 
-:rotating_light:If an endpoint requires data in the body, this is shown underneath the endpoint:rotating_light:
+:rotating_light:If an endpoint requires data in the body, this is shown underneath the endpoint.:rotating_light:
+
+`{name of what to insert here}` means, insert something here. Don't copy the `{}` along!
 
 ## Current endpoints:
 - `/users/login` **(Only Post)**
@@ -54,9 +56,9 @@ You can authenticate the request via the header in your request.
 
 The **key** should be `Authorization`.
 
-The **value** should be `Bearer access_token`. 
+The **value** should be `Bearer {access_token}`. 
 
-**Attention: `Bearer` has to be capitalized and a [space] has to be added between the `Bearer` and the `acces_token`**
+**Attention: `Bearer` has to be capitalized and a [space] has to be added between `Bearer` and the `acces_token`.**
 
 ##### :heavy_check_mark: On succes:
 - The request will be successfully executed as expected.
