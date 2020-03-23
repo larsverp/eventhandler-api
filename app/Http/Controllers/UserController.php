@@ -20,7 +20,7 @@ class UserController extends Controller
             'client_id' => '2',
             'client_secret' => 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg',
             'grant_type' => 'password',
-            'scope' => 'rockstar'
+            'scope' => 'guest'
         ];
 
         $request = app('request')->create('/oauth/token', 'POST', $data);
