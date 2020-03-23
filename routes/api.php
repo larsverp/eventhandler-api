@@ -25,3 +25,4 @@ Route::get('events', 'EventsController@index')->middleware(['auth:api', 'scope:r
 Route::get('events/{id}', 'EventsController@show')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
 Route::post('events', 'EventsController@create')->middleware(['auth:api', 'scope:rockstar']);
 Route::put('events/{id}', 'EventsController@update')->middleware(['auth:api', 'scope:rockstar']);
+Route::delete('events/{id}', 'EventsController@remove')->middleware(['auth:api', 'scope:rockstar']);

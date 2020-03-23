@@ -50,4 +50,10 @@ class EventsController extends Controller
             return response($event->id, 400);
         }
     }
+
+    public function remove($id){
+        $event = Events::FindOrFail($id);
+        $event->delete();
+        return response($event, 200);
+    }
 }
