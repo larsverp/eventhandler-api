@@ -13,6 +13,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+// Route::get('/', function () {
+//     return 'Only API calls are allowed.';
+// });
+
+Route::any('/', function () {
+    $message = ['message' => 'This URL is used as a REST API. This means only API calls are allowed!'];
+    return response(json_encode($message), 405);
+})->name('default');
+
+Route::any('/{any}', function () {
+   return redirect()->route('default');
 });
