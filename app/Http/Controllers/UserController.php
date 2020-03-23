@@ -8,25 +8,23 @@ use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
-    //TODO make this damm function work!
-    public function check(){
+    public function check(Request $request){
         $ValidateAttributes = request()->validate([
-            'username' => 'required|email',
-            'password' => 'required'   
+            'username' => 'required',
+            'password' => 'required'
         ]);
 
-        $scope = 'rockstar';
-
-        $response = Http::post('http://localhost/oauth/token', [
-            'grant_type' => 'password',
+        $data = [
+            'username' => $ValidateAttributes["username"],
+            'password' => $ValidateAttributes["password"],
             'client_id' => '2',
             'client_secret' => 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg',
-            'username' => request()->username,
-            'password' => request()->password,
-            'scope' => $scope
-        ]);
+            'grant_type' => 'password',
+        ];
 
-        return $response->throw();;
-        //return $ValidateAttributes;
+        $request = app('request')->create('/oauth/token', 'POST', $data);
+        $response = app('router')->prepareResponse($request, app()->handle($request));
+
+        return $response;
     }
 }
