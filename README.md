@@ -84,7 +84,7 @@ The `events` endpoind is used to list and create events.
 - [x] Create a get method, so the events can be shown.
 - [x] Create a create method, so new events can be created.
 - [x] Create an update method, so events can be changed.
-- [ ] Create a remove method, so events can be removed.
+- [x] Create a remove method, so events can be removed.
 
 <br>
 
@@ -156,3 +156,15 @@ The `put endpoints` do not require anything in the body. Only add the fields you
 
 ##### :heavy_check_mark: On succes:
 `200 OK` - returns a JSON object with the updated event data.
+
+<br>
+
+### :no_good: Remove events (delete method)
+The `delete endpoint` does not require anything in the body.
+- `/api/events/[id]` removes the event and returns it.
+  
+##### :x: Errors:
+`404 Not found` - The requested events does not exist
+
+##### :heavy_check_mark: On succes:
+`200 OK` - returns a JSON object with the removed event.
