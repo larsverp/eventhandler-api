@@ -9,7 +9,7 @@ $factory->define(Events::class, function (Faker $faker) {
     return [
         'title' => $faker->sentence,
         'description' => $faker->paragraph,
-        'date' => $faker->date,
+        'date' => $faker->dateTime,
         'thumbnail' => $faker->url,
         'seats' => $faker->randomDigit,
         'postal_code' => '5673RE',
