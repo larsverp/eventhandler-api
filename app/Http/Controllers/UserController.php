@@ -18,9 +18,9 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => '2',
-            'client_secret' => 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg',
+            'client_secret' => env('CLIENT_SECRET', 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg'),
             'grant_type' => 'password',
-            'scope' => 'guest'
+            'scope' => 'rockstar'
         ];
 
         $request = app('request')->create('/oauth/token', 'POST', $data);
