@@ -17,7 +17,7 @@ class UserController extends Controller
         $data = [
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
-            'client_id' => '2',
+            'client_id' => env('CLIENT_ID', '2'),
             'client_secret' => env('CLIENT_SECRET', 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg'),
             'grant_type' => 'password',
             'scope' => 'rockstar'
