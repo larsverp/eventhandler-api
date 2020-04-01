@@ -18,7 +18,7 @@ class CreateEventsTable extends Migration
             $table->string('title');
             $table->text('description');
             $table->timestamp('date');
-            $table->string('thumbnail');
+            $table->text('thumbnail');
             $table->integer('seats');
             $table->string('postal_code');
             $table->string('hnum');
