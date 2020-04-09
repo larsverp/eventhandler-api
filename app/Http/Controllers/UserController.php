@@ -4,28 +4,50 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
     public function check(Request $request){
         $ValidateAttributes = request()->validate([
-            'username' => 'required',
+            'username' => 'required|email:rfc,dns',
             'password' => 'required'
         ]);
+
+        $user = User::where('email', $ValidateAttributes["username"])->first();
 
         $data = [
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
-            'client_id' => env('CLIENT_ID', '2'),
-            'client_secret' => env('CLIENT_SECRET', 'odDN1FhXATGjowUpcN8RTIfbNLfopO91QbHKplOg'),
+            'client_id' => env('CLIENT_ID', '1'),
+            'client_secret' => env('CLIENT_SECRET', 'B3hQgRkp0vw2a7vocjmHGX3RRfFNqRgjdhsdJXmF'),
             'grant_type' => 'password',
-            'scope' => 'rockstar'
+            'scope' => $user->role
         ];
 
         $request = app('request')->create('/oauth/token', 'POST', $data);
         $response = app('router')->prepareResponse($request, app()->handle($request));
 
         return $response;
+    }
+
+    public function create(Request $request){
+        $ValidateAttributes = request()->validate([
+            'first_name' => 'required|max:191|string',
+            'insertion' => 'max:191|string',
+            'last_name' => 'required|max:191|string',
+            'email' => 'required|max:191|email:rfc,dns|unique:users,email',
+            'postal_code' => 'required|postal_code:NL,BE,DE',
+            'password' => 'required|max:191|string'
+        ]);
+
+        $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
+        $ValidateAttributes["role"] = "guest";
+
+        User::create($ValidateAttributes);
+
+        $ValidateAttributes["password"] = "secret";
+        return $ValidateAttributes;
     }
 }
