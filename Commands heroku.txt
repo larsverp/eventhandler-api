@@ -1,0 +1,11 @@
+heroku run php artisan migrate:fresh -a=eventhandler-api
+heroku run php artisan passport:client --password -a=eventhandler-api
+
+SECRET COPY 
+
+heroku config:set CLIENT_SECRET=[secret] -a=eventhandler-api
+
+heroku run php artisan tinker -a=eventhandler-api
+factory(App\User::class)->create();
+
+factory(App\Events::class,10)->create();

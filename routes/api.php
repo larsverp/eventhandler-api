@@ -18,10 +18,11 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+#Users endpoint route
 Route::post('users/login', 'UserController@check');
 Route::post('users/register', 'UserController@create');
 
-#TODO test if  the middleware routes checks are working.
+#Events endpoint route
 Route::get('events', 'EventsController@index');
 Route::get('events/{id}', 'EventsController@show');
 Route::post('events', 'EventsController@create')->middleware(['auth:api', 'scope:rockstar']);

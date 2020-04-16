@@ -15,7 +15,7 @@ class UserController extends Controller
             'password' => 'required'
         ]);
 
-        $user = User::where('email', $ValidateAttributes["username"])->first();
+        $user = User::where('email', $ValidateAttributes["username"])->firstOrFail();
 
         $data = [
             'username' => $ValidateAttributes["username"],
