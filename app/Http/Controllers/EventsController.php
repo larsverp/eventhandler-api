@@ -12,7 +12,7 @@ class EventsController extends Controller
     }
 
     public function show($id){
-        return Events::FindOrFail($id);
+        return Events::where('id', $id)->firstOrFail();
     }
 
     public function create(){
@@ -32,7 +32,7 @@ class EventsController extends Controller
     }
 
     public function update($id){
-        $event = Events::FindOrFail($id);
+        $event = Events::where('id', $id)->firstOrFail();
         $ValidateAttributes = request()->validate([
             'title' => 'max:191|string|unique:events,title',
             'description' => 'string',
@@ -52,7 +52,7 @@ class EventsController extends Controller
     }
 
     public function remove($id){
-        $event = Events::FindOrFail($id);
+        $event = Events::where('id', $id)->firstOrFail();
         $event->delete();
         return response($event, 200);
     }
