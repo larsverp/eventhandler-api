@@ -27,8 +27,8 @@ class EventsController extends Controller
             'hnum' => 'required|max:191|string',
             'notification' => 'required|boolean'    
         ]);
-        Events::create($ValidateAttributes);
-        return response($ValidateAttributes, 201);
+        $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
+        return response($event, 201);
     }
 
     public function update($id){
