@@ -37,7 +37,7 @@ class EventsController extends Controller
             'title' => 'max:191|string|unique:events,title',
             'description' => 'string',
             'date' => 'date|after_or_equal:today',
-            'thumbnail' => 'max:191|active_url',
+            'thumbnail' => 'max:1000|active_url',
             'seats' => 'integer|min:0',
             'postal_code' => 'postal_code:NL,BE,DE',
             'hnum' => 'max:191|string',
