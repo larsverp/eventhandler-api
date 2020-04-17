@@ -24,7 +24,13 @@ Route::post('users/register', 'UserController@create');
 
 #Events endpoint route
 Route::get('events', 'EventsController@index');
-Route::get('events/{id}', 'EventsController@show');
-Route::post('events', 'EventsController@create')->middleware(['auth:api', 'scope:rockstar']);
-Route::put('events/{id}', 'EventsController@update')->middleware(['auth:api', 'scope:rockstar']);
-Route::delete('events/{id}', 'EventsController@remove')->middleware(['auth:api', 'scope:rockstar']);
+Route::get('events/{id}', 'EventsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+Route::post('events', 'EventsController@create')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::put('events/{id}', 'EventsController@update')->middleware(['auth:api', 'scope:rockstar'])
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::delete('events/{id}', 'EventsController@remove')->middleware(['auth:api', 'scope:rockstar'])
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);

@@ -8,7 +8,7 @@ use  Illuminate\Support\Str;
 class Events extends Model
 {
     protected $fillable = ['title', 'description', 'date', 'thumbnail', 'seats', 'postal_code', 'hnum', 'notification'];
-
+    
     protected static function boot()
     {
         parent::boot();
