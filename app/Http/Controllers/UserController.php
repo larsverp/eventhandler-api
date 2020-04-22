@@ -59,6 +59,7 @@ class UserController extends Controller
             'insertion' => 'max:191|string',
             'last_name' => 'required|max:191|string',
             'email' => 'required|max:191|email:rfc,dns|unique:users,email',
+            'postal_code' => 'required|postal_code:NL,BE,DE',
             'password' => 'required|max:191|string'
         ]);
 
