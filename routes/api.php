@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 #Users endpoint route
 Route::post('users/login', 'UserController@check');
 Route::post('users/register', 'UserController@create');
+Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:rockstar']);
 
 #Events endpoint route
 Route::get('events', 'EventsController@index');

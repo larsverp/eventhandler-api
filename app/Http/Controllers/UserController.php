@@ -33,6 +33,7 @@ class UserController extends Controller
     }
 
     public function create(Request $request){
+
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
             'insertion' => 'max:191|string',
@@ -44,6 +45,25 @@ class UserController extends Controller
 
         $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
         $ValidateAttributes["role"] = "guest";
+
+        User::create($ValidateAttributes);
+
+        $ValidateAttributes["password"] = "secret";
+        return $ValidateAttributes;
+    }
+
+    public function rockstar(Request $request){
+
+        $ValidateAttributes = request()->validate([
+            'first_name' => 'required|max:191|string',
+            'insertion' => 'max:191|string',
+            'last_name' => 'required|max:191|string',
+            'email' => 'required|max:191|email:rfc,dns|unique:users,email',
+            'password' => 'required|max:191|string'
+        ]);
+
+        $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
+        $ValidateAttributes["role"] = "rockstar";
 
         User::create($ValidateAttributes);
 
