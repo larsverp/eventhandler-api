@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MailsController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,9 +30,24 @@ Route::get('events/{id}', 'EventsController@show')->where('id', '^[0-9a-f]{8}-[0
 Route::post('events', 'EventsController@create')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:rockstar']);
-Route::put('events/{id}', 'EventsController@update')->middleware(['auth:api', 'scope:rockstar'])
+Route::put('events/{id}', 'EventsController@update')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:rockstar']);
-Route::delete('events/{id}', 'EventsController@remove')->middleware(['auth:api', 'scope:rockstar'])
+Route::delete('events/{id}', 'EventsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+
+#Mails endpoint route
+Route::get('mails', 'MailsController@index')->middleware(['auth:api', 'scope:rockstar']);
+Route::get('mails/{id}', 'MailsController@show')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::post('mails', 'MailsController@create')->middleware(['auth:api', 'scope:rockstar']);
+Route::put('mails/{id}', 'MailsController@update')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::delete('mails/{id}', 'MailsController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::post('mails/verify', 'MailsController@verify')
     ->middleware(['auth:api', 'scope:rockstar']);
