@@ -66,6 +66,6 @@ class MailsController extends Controller
         Mail::send('emails.verify', ['user' => $ValidateAttributes], function ($m) use ($ValidateAttributes){
             $m->to($ValidateAttributes["email"])->subject('Je verificatie code');
         });
-        return response(201);
+        return response("OK", 201);
     }
 }
