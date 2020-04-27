@@ -39,6 +39,9 @@ Route::delete('events/{id}', 'EventsController@remove')
 
 #Mails endpoint route
 Route::get('mails', 'MailsController@index')->middleware(['auth:api', 'scope:rockstar']);
+Route::get('mails/{id}', 'MailsController@show')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar']);
 Route::post('mails', 'MailsController@create')->middleware(['auth:api', 'scope:rockstar']);
 Route::put('mails/{id}', 'MailsController@update')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')

@@ -12,6 +12,10 @@ class MailsController extends Controller
         return Mails::all();
     }
 
+    public function show($id){
+        return Mails::FindOrFail($id);
+    }
+
     public function create(){
         $ValidateAttributes = request()->validate([
             'title' => 'required|max:191|string',
