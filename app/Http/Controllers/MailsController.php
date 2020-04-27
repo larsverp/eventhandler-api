@@ -54,7 +54,7 @@ class MailsController extends Controller
 
     public function verify(){
         $ValidateAttributes = request()->validate([
-            'name' => 'max:191|string',
+            'name' => 'required|max:191|string',
             'email' => 'required|max:191|email:rfc,dns',
             'verify_code' => 'required|max:6|string'
         ]);
@@ -66,5 +66,6 @@ class MailsController extends Controller
         Mail::send('emails.verify', ['user' => $ValidateAttributes], function ($m) use ($ValidateAttributes){
             $m->to($ValidateAttributes["email"])->subject('Je verificatie code');
         });
+        return response(201);
     }
 }
