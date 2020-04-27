@@ -18,8 +18,8 @@ class MailsController extends Controller
 
     public function create(){
         $ValidateAttributes = request()->validate([
-            'title' => 'required|max:191|string',
-            'language' => 'required|max:191|string|',
+            'title' => 'required|max:191|string|unique:mails,title',
+            'language' => 'required|max:191|string',
             'subject' => 'required|max:191|string',
             'body' => 'required|max:16500000|string',
         ]);
@@ -32,7 +32,7 @@ class MailsController extends Controller
         $mail = Mails::FindOrFail($id);
 
         $ValidateAttributes = request()->validate([
-            'title' => 'max:191|string',
+            'title' => 'max:191|string|unique:mails,title',
             'language' => 'max:191|string|',
             'subject' => 'max:191|string',
             'body' => 'max:16500000|string',
