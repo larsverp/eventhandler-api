@@ -6,6 +6,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
+use  Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -19,6 +20,25 @@ class User extends Authenticatable
     protected $fillable = [
         'first_name', 'insertion', 'last_name', 'email', 'postal_code', 'password', 'role', 'auth_code', 'email_verified_at'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($post) {
+            $post->{$post->getKeyName()} = (string) Str::uuid();
+        });
+    }
+
+    public function getIncrementing()
+    {
+        return false;
+    }
+
+    public function getKeyType()
+    {
+        return 'string';
+    }
 
     /**
      * The attributes that should be hidden for arrays.
