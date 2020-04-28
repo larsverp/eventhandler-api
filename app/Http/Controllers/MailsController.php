@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mails;
+use App\User;
 use Mail;
 use Illuminate\Http\Request;
 
@@ -54,10 +55,19 @@ class MailsController extends Controller
 
     public function verify(){
         $ValidateAttributes = request()->validate([
-            'name' => 'required|max:191|string',
-            'email' => 'required|max:191|email:rfc,dns',
-            'verify_code' => 'required|max:6|string'
+            'email' => 'required|max:191|email:rfc,dns'
         ]);
+
+        $user = User::where('email', $ValidateAttributes["email"])->firstOrFail();
+        
+        if($user->email_verified_at != null){
+            return response()->json([
+                'message'=>'The email is already validated'
+            ], 409);
+        }
+
+        $ValidateAttributes["name"] = $user->first_name;
+        $ValidateAttributes["verify_code"] = $user->auth_code;
         
         $gifs = array("https://media.giphy.com/media/TdfyKrN7HGTIY/giphy.gif", "https://media.giphy.com/media/b5LTssxCLpvVe/giphy.gif", "https://media.giphy.com/media/3og0ICmyySyzbmnxqE/giphy.gif", "https://media.giphy.com/media/xT5LMHxhOfscxPfIfm/giphy.gif", "https://media.giphy.com/media/xT5LMPczMNDset02Tm/giphy.gif", "https://media.giphy.com/media/7ZjmsISzWnreE/giphy.gif");
 

@@ -23,6 +23,7 @@ $factory->define(User::class, function (Faker $faker) {
         'insertion' => 'van',
         'last_name' => $faker->lastName,
         'email' => 'test@test.nl',
+        'auth_code' => 123456,
         //'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'postal_code' => '5673RE',
