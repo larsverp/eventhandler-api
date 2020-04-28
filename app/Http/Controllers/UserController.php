@@ -58,7 +58,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'EitOLSFafDAfRaKTAtgMBt8gOpyxCaywzuAMZoUU'),
+            'client_secret' => env('CLIENT_SECRET', 'TvWlmtwbGY9K4ivWUkxs5uxXdMRl5fFq3VsMbXGc'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
