@@ -25,6 +25,13 @@ Route::post('users/register', 'UserController@create');
 Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:rockstar']);
 
+#Admin user endpoint
+Route::get('users', 'UserController@index')->middleware(['auth:api', 'scope:rockstar']);
+Route::put('users/{id}', 'UserController@update')
+    ->middleware(['auth:api', 'scope:rockstar']);
+Route::delete('users/{id}', 'UserController@remove')
+    ->middleware(['auth:api', 'scope:rockstar']);
+
 #Events endpoint route
 Route::get('events', 'EventsController@index');
 Route::get('events/{id}', 'EventsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');

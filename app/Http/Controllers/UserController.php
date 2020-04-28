@@ -10,6 +10,36 @@ use Illuminate\Support\Facades\Http;
 
 class UserController extends Controller
 {
+    public function index(){
+        return User::all();
+    }
+
+    public function update($id){
+        $user = User::FindOrFail($id);
+        $ValidateAttributes = request()->validate([
+            'first_name' => 'max:191|string',
+            'insertion' => 'nullable|string',
+            'last_name' => 'max:191|string',
+            'postal_code' => 'postal_code:NL,BE,DE',
+            'password' => 'max:191|string'
+        ]);
+        if(isset($ValidateAttributes["password"])){
+            $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
+        }
+        if($user->update($ValidateAttributes)){
+            return $user;
+        }
+        else{
+            return response($user->id, 400);
+        }
+    }
+
+    public function remove($id){
+        $user = User::FindOrFail($id);
+        $user->delete();
+        return response($user, 200);
+    }
+
     public function check(Request $request){
         $ValidateAttributes = request()->validate([
             'username' => 'required|email:rfc,dns',
@@ -28,7 +58,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'c2lslOyVr70ylris2z2RD2sWrWHYCr6sPrUT4iCV'),
+            'client_secret' => env('CLIENT_SECRET', 'EitOLSFafDAfRaKTAtgMBt8gOpyxCaywzuAMZoUU'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
@@ -126,7 +156,7 @@ class UserController extends Controller
         $ValidateAttributes["giflink"] = $gifs[rand(0,5)];
 
         Mail::send('emails.verify', ['user' => $ValidateAttributes], function ($m) use ($ValidateAttributes){
-            $m->to($ValidateAttributes["email"])->subject('Je verificatie code');
+            $m->to($ValidateAttributes["email"])->subject('Je verificatiecode');
         });
         return true;
     }
