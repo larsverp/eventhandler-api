@@ -28,7 +28,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', '6EgidGSW9LMb0bcMsI6zHVBAHj7rxUUPrFQvBoQP'),
+            'client_secret' => env('CLIENT_SECRET', 'c2lslOyVr70ylris2z2RD2sWrWHYCr6sPrUT4iCV'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
@@ -42,7 +42,7 @@ class UserController extends Controller
     public function create(Request $request){
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
-            'insertion' => 'max:191|string',
+            'insertion' => 'max:191|nullable|string',
             'last_name' => 'required|max:191|string',
             'email' => 'required|max:191|email:rfc,dns|unique:users,email',
             'postal_code' => 'required|postal_code:NL,BE,DE',

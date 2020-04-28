@@ -17,7 +17,8 @@ class CreateEventsTable extends Migration
             $table->uuid('id')->primary();
             $table->string('title');
             $table->text('description');
-            $table->timestamp('date');
+            $table->timestamp('begin_date');
+            $table->timestamp('end_date');
             $table->text('thumbnail');
             $table->integer('seats');
             $table->string('postal_code');
