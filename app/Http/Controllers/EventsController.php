@@ -20,7 +20,8 @@ class EventsController extends Controller
         $ValidateAttributes = request()->validate([
             'title' => 'required|max:191|string|unique:events,title',
             'description' => 'required|string',
-            'date' => 'required|date|after_or_equal:today',
+            'begin_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:begin_date',
             'thumbnail' => 'required|max:1000|active_url',
             'seats' => 'required|integer|min:0',
             'postal_code' => 'required|postal_code:NL,BE,DE',
@@ -36,7 +37,8 @@ class EventsController extends Controller
         $ValidateAttributes = request()->validate([
             'title' => 'max:191|string|unique:events,title',
             'description' => 'string',
-            'date' => 'date|after_or_equal:today',
+            'begin_date' => 'required|date|after_or_equal:today',
+            'end_date' => 'required|date|after_or_equal:begin_date',
             'thumbnail' => 'max:1000|active_url',
             'seats' => 'integer|min:0',
             'postal_code' => 'postal_code:NL,BE,DE',
