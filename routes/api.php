@@ -22,6 +22,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 #Users endpoint route
 Route::post('users/login', 'UserController@check');
 Route::post('users/register', 'UserController@create');
+Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:rockstar']);
 
 #Events endpoint route
@@ -49,5 +50,4 @@ Route::put('mails/{id}', 'MailsController@update')
 Route::delete('mails/{id}', 'MailsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:rockstar']);
-Route::post('mails/verify', 'MailsController@verify')
-    ->middleware(['auth:api', 'scope:rockstar']);
+Route::post('mails/verify', 'MailsController@verify');
