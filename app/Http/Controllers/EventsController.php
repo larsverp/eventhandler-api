@@ -18,7 +18,7 @@ class EventsController extends Controller
     public function create(){
         
         $ValidateAttributes = request()->validate([
-            'title' => 'required|max:191|string|unique:events,title',
+            'title' => 'required|max:191|string',
             'description' => 'required|string',
             'begin_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:begin_date',
@@ -35,7 +35,7 @@ class EventsController extends Controller
     public function update($id){
         $event = Events::FindOrFail($id);
         $ValidateAttributes = request()->validate([
-            'title' => 'max:191|string|unique:events,title',
+            'title' => 'max:191|string',
             'description' => 'string',
             'begin_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:begin_date',
