@@ -37,8 +37,8 @@ class EventsController extends Controller
         $ValidateAttributes = request()->validate([
             'title' => 'max:191|string',
             'description' => 'string',
-            'begin_date' => 'required|date|after_or_equal:today',
-            'end_date' => 'required|date|after_or_equal:begin_date',
+            'begin_date' => 'date|after_or_equal:today',
+            'end_date' => 'date|after_or_equal:begin_date',
             'thumbnail' => 'max:1000|active_url',
             'seats' => 'integer|min:0',
             'postal_code' => 'postal_code:NL,BE,DE',
