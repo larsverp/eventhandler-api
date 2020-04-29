@@ -58,3 +58,10 @@ Route::delete('mails/{id}', 'MailsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:rockstar']);
 Route::post('mails/verify', 'MailsController@verify');
+
+#Favorite endpoint
+Route::get('favorites', 'FavoritesController@show')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
+Route::post('favorites', 'FavoritesController@create')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
+Route::delete('favorites/{id}', 'FavoritesController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar,partner,guest']);
