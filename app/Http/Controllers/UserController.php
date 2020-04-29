@@ -18,7 +18,7 @@ class UserController extends Controller
         $user = User::FindOrFail($id);
         $ValidateAttributes = request()->validate([
             'first_name' => 'max:191|string',
-            'insertion' => 'nullable|string',
+            'insertion' => 'max:191|nullable|string',
             'last_name' => 'max:191|string',
             'postal_code' => 'postal_code:NL,BE,DE',
             'password' => 'max:191|string'
@@ -58,7 +58,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'TvWlmtwbGY9K4ivWUkxs5uxXdMRl5fFq3VsMbXGc'),
+            'client_secret' => env('CLIENT_SECRET', 'bcLMOeu5ROlt9onnTR6jyCrA5ZiaRHprr1dtDAAn'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
