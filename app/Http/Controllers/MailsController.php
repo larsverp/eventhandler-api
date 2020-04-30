@@ -74,7 +74,7 @@ class MailsController extends Controller
         $ValidateAttributes["giflink"] = $gifs[rand(0,5)];
 
         $email = Mail::send('emails.verify', ['user' => $ValidateAttributes], function ($m) use ($ValidateAttributes){
-            $m->to($ValidateAttributes["email"])->subject('Je verificatie code');
+            $m->to($ValidateAttributes["email"])->subject('Verify your email');
         });
         return response($email, 201);
     }
