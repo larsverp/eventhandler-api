@@ -14,11 +14,13 @@ class CreateTicketsTable extends Migration
     public function up()
     {
         Schema::create('tickets', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->uuid('event_id');
             $table->uuid('user_id');
             $table->string('token');
             $table->boolean('scanned')->default(false);
+            $table->boolean('unsubscribe')->default(false);
+            $table->string('reason')->nullable();
             $table->timestamps();
         });
     }

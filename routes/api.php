@@ -69,4 +69,7 @@ Route::delete('favorites/{id}', 'FavoritesController@remove')
 #Ticket endpoint
 Route::get('tickets', 'TicketsController@show')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
 Route::post('tickets', 'TicketsController@create')->middleware(['auth:api', 'scope:rockstar,partner,guest']);
-Route::post('tickets/test', 'TicketsController@test');
+Route::delete('tickets/{id}', 'TicketsController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:rockstar,partner,guest']);
+Route::post('tickets/scan', 'TicketsController@scan')->middleware(['auth:api', 'scope:rockstar']);

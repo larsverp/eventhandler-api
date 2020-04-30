@@ -1,7 +1,7 @@
 <html>
-<h3 style="text-align: center;"><strong>Hey {{ $name }},</strong></h3>
-<h3 style="text-align: center;">Leuk dat je je hebt aangemeld voor {{ $event->title }} Dit event vind plaats op {{ $event->begin_date }}</h3>
-<h4 style="text-align: center;"> In deze mail staat je ticket, bewaar deze mail daarom goed.</h4>
-<p style="text-align: center;"><img src="{!!$message->embedData($qr, 'Rockstar-ticket.png', 'image/png')!!}"></p>
-<h3 style="text-align: center;"><strong>Laat dit ticket scannen om toegang te krijgen tot het event.</strong></h3>
+<h2 style="text-align: center;"><strong>Hey {{ $name }},</strong></h2><br>
+<h3 style="text-align: center;">This is your ticket for <b>"{{ $event->title }}"</b></h3>
+<h3 style="text-align: center;">This event takes place on <b>{{explode(" ",$event->begin_date)[0]}} at {{substr(explode(" ",$event->begin_date)[1], 0,5)}}</h3>
+<p style="text-align: center;"><img src="{!!$message->embedData($qr, 'rockstars_event_ticket.png', 'image/png')!!}"></p>
+<h3 style="text-align: center;"><strong>Show this ticket at the start of this event.</strong></h3>
 </html>

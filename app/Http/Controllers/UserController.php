@@ -58,7 +58,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'bcLMOeu5ROlt9onnTR6jyCrA5ZiaRHprr1dtDAAn'),
+            'client_secret' => env('CLIENT_SECRET', 'FrCSBNijxURZLJyJRTF7E1KghX2la9v5fDX1VkUL'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
@@ -156,7 +156,7 @@ class UserController extends Controller
         $ValidateAttributes["giflink"] = $gifs[rand(0,5)];
 
         Mail::send('emails.verify', ['user' => $ValidateAttributes], function ($m) use ($ValidateAttributes){
-            $m->to($ValidateAttributes["email"])->subject('Je verificatiecode');
+            $m->to($ValidateAttributes["email"])->subject('Verify your email');
         });
         return true;
     }
