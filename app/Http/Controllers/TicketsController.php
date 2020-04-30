@@ -15,7 +15,7 @@ class TicketsController extends Controller
         $tickets = Tickets::where('user_id', $request->user()->id)
             ->where('scanned', false)
             ->pluck('event_id');
-        return Events::find($tickets);
+        return Events::FindOrFail($tickets);
     }
 
     public function create(Request $request){
@@ -32,7 +32,7 @@ class TicketsController extends Controller
                          ->size(500)->errorCorrection('H')
                          ->generate($request->user()->id.'|'.$ValidateAttributes["token"]);
 
-        $event = Events::find($ValidateAttributes["event_id"]);
+        $event = Events::FindOrFail($ValidateAttributes["event_id"]);
 
         Mail::send('emails.ticket', ['qr' => $image, 'name' => $request->user()->first_name, 'event'=> $event], function ($m) use ($request, $event){
             $m->to($request->user()->email)->subject('Your ticket for '.$event->title);
@@ -43,11 +43,11 @@ class TicketsController extends Controller
     
     public function remove($id, Request $request){
         $ValidateAttributes = request()->validate([
-            'reason' => ['required', 'string']
+            'reason' => ['required', 'string', 'max:191']
         ]);
         $ValidateAttributes["unsubscribe"] = true;
 
-        $ticket = Tickets::find($id);
+        $ticket = Tickets::FindOrFail($id);
         if($ticket->user_id == $request->user()->id){
             if($ticket->update($ValidateAttributes)){
                 return response()->json([
@@ -87,7 +87,7 @@ class TicketsController extends Controller
             else{
                 return response()->json([
                     "message" => "This ticket is already scanned"
-                ], 401);
+                ], 406);
             }
         }
         else{
