@@ -29,9 +29,10 @@ class AuthServiceProvider extends ServiceProvider
         Passport::routes();
 
         Passport::tokensCan([
-            'rockstar' => 'RockStars administrators',
+            'admin' => 'Rockstars administrators',
+            'rockstar' => 'RockStars employees',
             'partner' => 'RockStars partners',
-            'guest' => 'Rockstars guest'
+            'guest' => 'Rockstars guest',
         ]);
 
         Passport::setDefaultScope([

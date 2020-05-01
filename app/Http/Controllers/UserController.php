@@ -58,7 +58,7 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'FrCSBNijxURZLJyJRTF7E1KghX2la9v5fDX1VkUL'),
+            'client_secret' => env('CLIENT_SECRET', 'M8b10M3FdBQhsitfNUtNTF5tAuQyTT6Gu65euGgR'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
@@ -131,6 +131,25 @@ class UserController extends Controller
 
         $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
         $ValidateAttributes["role"] = "rockstar";
+
+        User::create($ValidateAttributes);
+
+        $ValidateAttributes["password"] = "secret";
+        return $ValidateAttributes;
+    }
+
+    public function admin(Request $request){
+
+        $ValidateAttributes = request()->validate([
+            'first_name' => 'required|max:191|string',
+            'insertion' => 'max:191|string',
+            'last_name' => 'required|max:191|string',
+            'email' => 'required|max:191|email:rfc,dns|unique:users,email',
+            'password' => 'required|max:191|string'
+        ]);
+
+        $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
+        $ValidateAttributes["role"] = "admin";
 
         User::create($ValidateAttributes);
 
