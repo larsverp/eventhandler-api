@@ -23,6 +23,7 @@ class CreateEventsTable extends Migration
             $table->integer('seats');
             $table->string('postal_code');
             $table->string('hnum');
+            $table->boolean('rockstar')->default(false);
             $table->boolean('notification');
             $table->timestamps();
         });

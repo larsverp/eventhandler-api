@@ -7,8 +7,17 @@ use Illuminate\Http\Request;
 
 class EventsController extends Controller
 {
-    public function index(){
-        return Events::all();
+    public function index(Request $request){
+        if($request->user()->role == "rockstar" || $request->user()->role == "admin"){
+            return Events::all();
+        }
+        else{
+            return Events::where('rockstar', false)->get();
+        }
+    }
+
+    public function preview(){
+        return Events::where('rockstar', false)->get();
     }
 
     public function show($id){
@@ -26,7 +35,8 @@ class EventsController extends Controller
             'seats' => 'required|integer|min:0',
             'postal_code' => 'required|postal_code:NL,BE,DE',
             'hnum' => 'required|max:191|string',
-            'notification' => 'required|boolean'    
+            'notification' => 'required|boolean',
+            'rockstar' => 'required|boolean'
         ]);
         $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
         return response($event, 201);
@@ -43,7 +53,8 @@ class EventsController extends Controller
             'seats' => 'integer|min:0',
             'postal_code' => 'postal_code:NL,BE,DE',
             'hnum' => 'max:191|string',
-            'notification' => 'boolean'
+            'notification' => 'boolean',
+            'rockstar' => 'boolean'
         ]);
         if($event->update($ValidateAttributes)){
             return $event;

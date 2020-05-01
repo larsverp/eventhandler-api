@@ -24,11 +24,10 @@ $factory->define(User::class, function (Faker $faker) {
         'last_name' => $faker->lastName,
         'email' => 'test@test.nl',
         'auth_code' => 123456,
-        //'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'postal_code' => '5673RE',
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
-        'role' => 'rockstar',
+        'role' => 'admin',
         'remember_token' => Str::random(10),
     ];
 });
