@@ -76,3 +76,14 @@ Route::delete('tickets/{id}', 'TicketsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('tickets/scan', 'TicketsController@scan')->middleware(['auth:api', 'scope:admin']);
+
+#Hosts endpoint
+Route::get('hosts', 'HostsController@index');
+Route::get('hosts/{id}', 'HostsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+Route::post('hosts', 'HostsController@create')->middleware(['auth:api', 'scope:admin']);
+Route::put('hosts/{id}', 'HostsController@update')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
+Route::delete('hosts/{id}', 'HostsController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
