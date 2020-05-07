@@ -27,4 +27,8 @@ class Tickets extends Model
     {
         return 'string';
     }
+
+    protected $hidden = [
+        'token',
+    ];
 }
