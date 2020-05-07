@@ -29,6 +29,7 @@ class EventsController extends Controller
         $ValidateAttributes = request()->validate([
             'title' => 'required|max:191|string',
             'description' => 'required|string',
+            'host_id' => 'uuid|exists:hosts,id',
             'begin_date' => 'required|date|after_or_equal:today',
             'end_date' => 'required|date|after_or_equal:begin_date',
             'thumbnail' => 'required|max:1000|active_url',
@@ -47,6 +48,7 @@ class EventsController extends Controller
         $ValidateAttributes = request()->validate([
             'title' => 'max:191|string',
             'description' => 'string',
+            'host_id' => 'string|max:191|exists:hosts,id',
             'begin_date' => 'date|after_or_equal:today',
             'end_date' => 'date|after_or_equal:begin_date',
             'thumbnail' => 'max:1000|active_url',
