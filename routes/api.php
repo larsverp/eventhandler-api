@@ -19,22 +19,21 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user()->role;
 })->name('auth');
 
-#Users endpoint route
+#Users endpoints
 Route::post('users/login', 'UserController@check');
 Route::post('users/register', 'UserController@create');
 Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:admin']);
 Route::post('users/register/admin', 'UserController@admin')->middleware(['auth:api', 'scope:admin']);
 
-#Admin user endpoint
+#Admin endpoints
 Route::get('users', 'UserController@index')->middleware(['auth:api', 'scope:admin']);
 Route::put('users/{id}', 'UserController@update')
     ->middleware(['auth:api', 'scope:admin']);
 Route::delete('users/{id}', 'UserController@remove')
     ->middleware(['auth:api', 'scope:admin']);
 
-#Events endpoint route
-
+#Events endpoints
 Route::get('events', 'EventsController@index')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::get('events/preview', 'EventsController@preview');
 Route::get('events/{id}', 'EventsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
@@ -48,7 +47,7 @@ Route::delete('events/{id}', 'EventsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
 
-#Mails endpoint route
+#Mails endpoints
 Route::get('mails', 'MailsController@index')->middleware(['auth:api', 'scope:admin']);
 Route::get('mails/{id}', 'MailsController@show')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
@@ -62,14 +61,14 @@ Route::delete('mails/{id}', 'MailsController@remove')
     ->middleware(['auth:api', 'scope:admin']);
 Route::post('mails/verify', 'MailsController@verify');
 
-#Favorite endpoint
+#Favorite endpoints
 Route::get('favorites', 'FavoritesController@show')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('favorites', 'FavoritesController@create')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::delete('favorites/{id}', 'FavoritesController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 
-#Ticket endpoint
+#Ticket endpoints
 Route::get('tickets', 'TicketsController@show')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('tickets', 'TicketsController@create')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::delete('tickets/{id}', 'TicketsController@remove')
@@ -77,7 +76,7 @@ Route::delete('tickets/{id}', 'TicketsController@remove')
     ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('tickets/scan', 'TicketsController@scan')->middleware(['auth:api', 'scope:admin']);
 
-#Hosts endpoint
+#Hosts endpoints
 Route::get('hosts', 'HostsController@index');
 Route::get('hosts/{id}', 'HostsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
 Route::post('hosts', 'HostsController@create')->middleware(['auth:api', 'scope:admin']);
@@ -85,5 +84,17 @@ Route::put('hosts/{id}', 'HostsController@update')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
 Route::delete('hosts/{id}', 'HostsController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
+
+#Review endpoints
+Route::get('reviews', 'ReviewsController@index')->middleware(['auth:api', 'scope:admin']);
+Route::get('reviews/{id}', 'ReviewsController@show')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+Route::get('reviews/check', 'ReviewsController@check')->middleware(['auth:api', 'scope:admin']);
+Route::post('reviews', 'ReviewsController@create')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::post('reviews/approve/{id}', 'ReviewsController@approve')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
+Route::delete('reviews/{id}', 'ReviewsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
