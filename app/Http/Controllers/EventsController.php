@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Cat_Eve;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
@@ -25,7 +26,6 @@ class EventsController extends Controller
     }
 
     public function create(){
-        
         $ValidateAttributes = request()->validate([
             'title' => 'required|max:191|string',
             'description' => 'required|string',
@@ -36,10 +36,14 @@ class EventsController extends Controller
             'seats' => 'required|integer|min:0',
             'postal_code' => 'required|postal_code:NL,BE,DE',
             'hnum' => 'required|max:191|string',
+            'categories' => 'required|array',
             'notification' => 'required|boolean',
             'rockstar' => 'required|boolean'
         ]);
         $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
+        foreach($ValidateAttributes["categories"] as $category){
+            Cat_Eve::create(['event_id' => $event->id, 'category_id' => $category]);
+        }
         return response($event, 201);
     }
 
@@ -55,9 +59,19 @@ class EventsController extends Controller
             'seats' => 'integer|min:0',
             'postal_code' => 'postal_code:NL,BE,DE',
             'hnum' => 'max:191|string',
+            'categories' => 'array',
             'notification' => 'boolean',
             'rockstar' => 'boolean'
         ]);
+        
+        if(isset($ValidateAttributes["categories"])){
+            $previous = Cat_Eve::where('event_id', $id);
+            $previous->delete();
+            foreach($ValidateAttributes["categories"] as $category){
+                Cat_Eve::create(['event_id' => $event->id, 'category_id' => $category]);
+            }
+        }
+
         if($event->update($ValidateAttributes)){
             return $event;
         }
