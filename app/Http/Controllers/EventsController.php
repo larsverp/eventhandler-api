@@ -66,7 +66,9 @@ class EventsController extends Controller
         
         if(isset($ValidateAttributes["categories"])){
             $previous = Cat_Eve::where('event_id', $event->id)->get();
-            $previous->delete();
+            foreach($previous as $data){
+                $data->delete();
+            }
             foreach($ValidateAttributes["categories"] as $category){
                 Cat_Eve::create(['event_id' => $event->id, 'category_id' => $category]);
             }
