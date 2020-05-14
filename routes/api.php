@@ -98,3 +98,15 @@ Route::post('reviews/approve/{id}', 'ReviewsController@approve')
 Route::delete('reviews/{id}', 'ReviewsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
+
+#category endpoints
+Route::get('categories', 'CategoriesController@index')->middleware(['auth:api', 'scope:admin']);
+Route::get('categories/event/{id}', 'CategoriesController@event')->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$');
+Route::get('categories/{id}', 'CategoriesController@show')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::post('categories', 'CategoriesController@create')->middleware(['auth:api', 'scope:admin']);
+Route::put('categories/{id}', 'CategoriesController@update')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
+Route::delete('categories/{id}', 'CategoriesController@remove')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin']);
