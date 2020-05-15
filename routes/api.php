@@ -21,6 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 #Users endpoints
 Route::post('users/login', 'UserController@check');
+Route::get('users/role','UserController@role')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('users/register', 'UserController@create');
 Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:admin']);

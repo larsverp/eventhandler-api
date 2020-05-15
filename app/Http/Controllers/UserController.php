@@ -69,6 +69,10 @@ class UserController extends Controller
         return $response;
     }
 
+    public function role(Request $request){
+        return response()->json(['role'=>$request->user()->role]);
+    }
+
     public function create(Request $request){
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
