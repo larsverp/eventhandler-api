@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
-use App\Cat_Eve;
+use App\CatEve;
 use Illuminate\Http\Request;
 
 class EventsController extends Controller
@@ -42,7 +42,7 @@ class EventsController extends Controller
         ]);
         $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
         foreach($ValidateAttributes["categories"] as $category){
-            Cat_Eve::create(['event_id' => $event->id, 'category_id' => $category]);
+            CatEve::create(['event_id' => $event->id, 'category_id' => $category]);
         }
         return response($event, 201);
     }
@@ -65,12 +65,12 @@ class EventsController extends Controller
         ]);
         
         if(isset($ValidateAttributes["categories"])){
-            $previous = Cat_Eve::where('event_id', $event->id)->get();
+            $previous = CatEve::where('event_id', $event->id)->get();
             foreach($previous as $data){
                 $data->delete();
             }
             foreach($ValidateAttributes["categories"] as $category){
-                Cat_Eve::create(['event_id' => $event->id, 'category_id' => $category]);
+                CatEve::create(['event_id' => $event->id, 'category_id' => $category]);
             }
         }
 
