@@ -39,7 +39,6 @@ class User extends Authenticatable
     {
         return 'string';
     }
-
     /**
      * The attributes that should be hidden for arrays.
      *
