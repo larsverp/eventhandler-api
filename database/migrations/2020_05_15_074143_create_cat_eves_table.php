@@ -13,7 +13,8 @@ class CreateCatEvesTable extends Migration
      */
     public function up()
     {
-        Schema::create('cat__eves', function (Blueprint $table) {
+        Schema::create('cat_eves', function (Blueprint $table) {
+            $table->uuid('id')->primary();
             $table->uuid('event_id');
             $table->uuid('category_id');
             $table->timestamps();
@@ -27,6 +28,6 @@ class CreateCatEvesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('cat__eves');
+        Schema::dropIfExists('cat_eves');
     }
 }
