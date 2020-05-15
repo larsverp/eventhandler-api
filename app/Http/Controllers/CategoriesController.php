@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Categories;
-use App\Cat_Eve;
+use App\CatEve;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -13,7 +13,7 @@ class CategoriesController extends Controller
     }
 
     public function event($id){
-        $cat_ids = Cat_Eve::where('event_id', $id)->pluck('category_id');
+        $cat_ids = CatEve::where('event_id', $id)->pluck('category_id');
         return Categories::whereIn('id', $cat_ids)->get();
     }
 
