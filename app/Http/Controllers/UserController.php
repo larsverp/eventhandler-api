@@ -164,7 +164,9 @@ class UserController extends Controller
     }
 
     public function following(Request $request){
-        $hosts = hos_use::where('user_id', $request->user()->id)->pluck('host_id');
+        $hosts = hos_use::where('user_id', $request->user()->id)
+            ->where('following', true)
+            ->pluck('host_id');
         return Hosts::FindOrFail($hosts);
     }
 

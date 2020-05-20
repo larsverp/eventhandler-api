@@ -17,6 +17,8 @@ class CreateHosUsesTable extends Migration
             $table->id();
             $table->uuid('host_id');
             $table->uuid('user_id');
+            $table->integer('points')->default(0);
+            $table->boolean('following')->default(false);
         });
     }
 
