@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Mail;
+use App\hos_use;
+use App\Hosts;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -159,6 +161,11 @@ class UserController extends Controller
 
         $ValidateAttributes["password"] = "secret";
         return $ValidateAttributes;
+    }
+
+    public function following(Request $request){
+        $hosts = hos_use::where('user_id', $request->user()->id)->pluck('host_id');
+        return Hosts::FindOrFail($hosts);
     }
 
     private function send_mail($mail){

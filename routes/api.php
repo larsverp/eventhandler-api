@@ -26,6 +26,8 @@ Route::post('users/register', 'UserController@create');
 Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:admin']);
 Route::post('users/register/admin', 'UserController@admin')->middleware(['auth:api', 'scope:admin']);
+#Get following hosts
+Route::get('users/following', 'UserController@following')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 
 #Admin endpoints
 Route::get('users', 'UserController@index')->middleware(['auth:api', 'scope:admin']);
@@ -87,6 +89,14 @@ Route::put('hosts/{id}', 'HostsController@update')
 Route::delete('hosts/{id}', 'HostsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
+#Follow and unfollow host endpoints
+Route::post('hosts/follow', 'HostsController@follow')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::delete('hosts/unfollow/{id}', 'HostsController@unfollow')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::get('hosts/followers/{id}', 'HostsController@followers')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 
 #Review endpoints
 Route::get('reviews', 'ReviewsController@index')->middleware(['auth:api', 'scope:admin']);
