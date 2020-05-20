@@ -51,24 +51,32 @@ class HostsController extends Controller
 
     public function follow(Request $request){
         $ValidateAttributes = request()->validate([
-            'host_id' => ['required', 'uuid', 'exists:hosts,id', 'unique:hos_uses,host_id,NULL,id,user_id,'.$request->user()->id]
+            'host_id' => ['required', 'uuid', 'exists:hosts,id']
         ]);
         $ValidateAttributes["user_id"] = $request->user()->id;
 
-        $follow = hos_use::FindOrFail(hos_use::create($ValidateAttributes)->id);
-        return response($follow, 201);
+        $data = hos_use::where('host_id', $ValidateAttributes["host_id"])
+            ->where('user_id', $ValidateAttributes["user_id"])
+            ->First();
+        if($data == null){
+            $data = hos_use::FindOrFail(hos_use::create($ValidateAttributes)->id);
+        }
+        $data->update(['following' => true]);
+        return response($data, 201);
     }
 
     public function unfollow($id, Request $request){
         $unfollow = hos_use::where('user_id', $request->user()->id)
             ->where('host_id', $id)
             ->FirstOrFail();
-        $unfollow->delete();
+        $unfollow->update(['following' => false]);
         return response($unfollow, 200);
     }
 
     public function followers($id, Request $request){
-        $users = hos_use::where('host_id', $id)->pluck('user_id');
+        $users = hos_use::where('host_id', $id)
+            ->where('following', true)
+            ->pluck('user_id');
         return response()->json([
             "total" => count($users)
         ], 200);
