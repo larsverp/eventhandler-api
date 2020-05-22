@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Categories;
 use App\CatEve;
+use App\cat_use;
 use Illuminate\Http\Request;
 
 class CategoriesController extends Controller
@@ -50,5 +51,38 @@ class CategoriesController extends Controller
         $category = Categories::FindOrFail($id);
         $category->delete();
         return response($category, 200);
+    }
+
+    public function follow(Request $request){
+        $ValidateAttributes = request()->validate([
+            'category_id' => ['required', 'uuid', 'exists:categories,id']
+        ]);
+        $ValidateAttributes["user_id"] = $request->user()->id;
+
+        $data = cat_use::where('category_id', $ValidateAttributes["category_id"])
+            ->where('user_id', $ValidateAttributes["user_id"])
+            ->First();
+        if($data == null){
+            $data = cat_use::FindOrFail(cat_use::create($ValidateAttributes)->id);
+        }
+        $data->update(['following' => true]);
+        return response($data, 201);
+    }
+
+    public function unfollow($id, Request $request){
+        $unfollow = cat_use::where('user_id', $request->user()->id)
+            ->where('category_id', $id)
+            ->FirstOrFail();
+        $unfollow->update(['following' => false]);
+        return response($unfollow, 200);
+    }
+
+    public function followers($id, Request $request){
+        $users = cat_use::where('category_id', $id)
+            ->where('following', true)
+            ->pluck('user_id');
+        return response()->json([
+            "total" => count($users)
+        ], 200);
     }
 }

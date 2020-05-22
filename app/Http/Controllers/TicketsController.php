@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Tickets;
 use App\Events;
 use Mail;
+use App\Points\Points;
 use Illuminate\Support\Str;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -38,6 +39,8 @@ class TicketsController extends Controller
             $m->to($request->user()->email)->subject('Your ticket for '.$event->title);
         });
 
+        Points::Hosts('event_subscribe', $event->host_id, $request);
+
         return response($ticket, 201);
     }
     
@@ -48,6 +51,10 @@ class TicketsController extends Controller
         $ValidateAttributes["unsubscribe"] = true;
 
         $ticket = Tickets::FindOrFail($id);
+        
+        $event = Events::FindOrFail($ticket->event_id);
+        Points::Hosts('event_unsubscribe', $event->host_id, $request);
+
         if($ticket->user_id == $request->user()->id){
             if($ticket->update($ValidateAttributes)){
                 return response()->json([

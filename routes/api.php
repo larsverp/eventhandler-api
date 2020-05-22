@@ -27,7 +27,8 @@ Route::post('users/validation', 'UserController@validation');
 Route::post('users/register/rockstar', 'UserController@rockstar')->middleware(['auth:api', 'scope:admin']);
 Route::post('users/register/admin', 'UserController@admin')->middleware(['auth:api', 'scope:admin']);
 #Get following hosts
-Route::get('users/following', 'UserController@following')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::get('users/following/hosts', 'UserController@followingHosts')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::get('users/following/categories', 'UserController@followingCategories')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 
 #Admin endpoints
 Route::get('users', 'UserController@index')->middleware(['auth:api', 'scope:admin']);
@@ -121,6 +122,14 @@ Route::put('categories/{id}', 'CategoriesController@update')
 Route::delete('categories/{id}', 'CategoriesController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
+#Follow and unfollow category endpoints
+Route::post('categories/follow', 'CategoriesController@follow')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::delete('categories/unfollow/{id}', 'CategoriesController@unfollow')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
+Route::get('categories/followers/{id}', 'CategoriesController@followers')
+    ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
+    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 
 #PointsSettings endpoint
 Route::get('pointsettings', 'PointsSettingsController@index')->middleware(['auth:api', 'scope:admin']);

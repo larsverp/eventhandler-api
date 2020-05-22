@@ -6,6 +6,8 @@ use App\User;
 use Mail;
 use App\hos_use;
 use App\Hosts;
+use App\Categories;
+use App\cat_use;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
@@ -163,11 +165,18 @@ class UserController extends Controller
         return $ValidateAttributes;
     }
 
-    public function following(Request $request){
+    public function followingHosts(Request $request){
         $hosts = hos_use::where('user_id', $request->user()->id)
             ->where('following', true)
             ->pluck('host_id');
         return Hosts::FindOrFail($hosts);
+    }
+
+    public function followingCategories(Request $request){
+        $category = cat_use::where('user_id', $request->user()->id)
+            ->where('following', true)
+            ->pluck('category_id');
+        return Categories::FindOrFail($category);
     }
 
     private function send_mail($mail){
