@@ -13,10 +13,7 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class TicketsController extends Controller
 {
     public function show(Request $request){
-        $tickets = Tickets::where('user_id', $request->user()->id)
-            ->where('scanned', false)
-            ->pluck('event_id');
-        return Events::FindOrFail($tickets);
+        return Tickets::where('user_id', $request->user()->id)->get();
     }
 
     public function create(Request $request){
