@@ -50,7 +50,9 @@ class TicketsController extends Controller
         ]);
         $ValidateAttributes["unsubscribe"] = true;
 
-        $ticket = Tickets::FindOrFail($id);
+        $ticket = Tickets::Where('event_id', $id)
+                    ->where('user_id', $request->user()->id)
+                    ->FirstOrFail();
         
         $event = Events::FindOrFail($ticket->event_id);
         Points::Hosts('event_unsubscribe', $event->host_id, $request);
