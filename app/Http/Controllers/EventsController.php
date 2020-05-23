@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events;
+use App\Tickets;
 use App\CatEve;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -14,6 +15,7 @@ class EventsController extends Controller
             $events = Events::all();
             foreach($events as $event){
                 $event = $this->location($event);
+                $event->seats = $this->seats($event);
             }
             return $events;
         }
@@ -21,6 +23,7 @@ class EventsController extends Controller
             $events = Events::where('rockstar', false)->get();
             foreach($events as $event){
                 $event = $this->location($event);
+                $event->seats = $this->seats($event);
             }
             return $events;
         }
@@ -30,12 +33,15 @@ class EventsController extends Controller
         $events = Events::where('rockstar', false)->get();
         foreach($events as $event){
             $event = $this->location($event);
+            $event->seats = $this->seats($event);
         }
         return $events;
     }
 
     public function show($id){
-        return $this->location(Events::FindOrFail($id));
+        $event = $this->location(Events::FindOrFail($id));
+        $event->seats = $this->seats($event);
+        return $event;
 
     }
 
@@ -90,7 +96,10 @@ class EventsController extends Controller
         }
 
         if($event->update($ValidateAttributes)){
-            return $this->location($event);
+            $event = $this->location($event);
+            $event->seats = $this->seats($event);
+            return $event;
+            
         }
         else{
             return response($event->id, 400);
@@ -110,5 +119,11 @@ class EventsController extends Controller
         $event['city'] = $response['city'];
         $event['street'] = $response['street'];
         return $event;
+    }
+
+    private function seats($event){
+       return $event->seats - count(Tickets::where('event_id', $event->id)
+                                        ->where('unsubscribe', false)
+                                        ->pluck('event_id'));
     }
 }
