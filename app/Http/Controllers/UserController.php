@@ -18,13 +18,20 @@ class UserController extends Controller
         return User::all();
     }
 
-    public function update($id){
+    public function update($id, Request $request){
+        if($request->user()->id == $id){
+            return response()->json([
+                "succes" => false,
+                "reason" => "It's not possible to update your own account via this endpoint."
+            ]);
+        }
         $user = User::FindOrFail($id);
         $ValidateAttributes = request()->validate([
             'first_name' => 'max:191|string',
             'insertion' => 'max:191|nullable|string',
             'last_name' => 'max:191|string',
             'postal_code' => 'postal_code:NL,BE,DE',
+            'role' => 'in:admin,rockstar,partner,guest',
             'password' => 'max:191|string'
         ]);
         if(isset($ValidateAttributes["password"])){
@@ -38,7 +45,14 @@ class UserController extends Controller
         }
     }
 
-    public function remove($id){
+    public function remove($id, Request $request){
+        if($request->user()->id == $id){
+            return response()->json([
+                "succes" => false,
+                "reason" => "It's not possible to remove your own account, please contact another admin if you want to remove your account."
+            ]);
+        }
+
         $user = User::FindOrFail($id);
         $user->delete();
         return response($user, 200);
@@ -139,10 +153,13 @@ class UserController extends Controller
 
         $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
         $ValidateAttributes["role"] = "rockstar";
+        $ValidateAttributes["auth_code"] = rand(100000,999999);
 
         User::create($ValidateAttributes);
 
         $ValidateAttributes["password"] = "secret";
+        $ValidateAttributes["auth_code"] = "secret";
+        $this->send_mail($ValidateAttributes["email"]);
         return $ValidateAttributes;
     }
 
@@ -158,10 +175,13 @@ class UserController extends Controller
 
         $ValidateAttributes["password"] = Hash::make($ValidateAttributes["password"]);
         $ValidateAttributes["role"] = "admin";
+        $ValidateAttributes["auth_code"] = rand(100000,999999);
 
         User::create($ValidateAttributes);
 
         $ValidateAttributes["password"] = "secret";
+        $ValidateAttributes["auth_code"] = "secret";
+        $this->send_mail($ValidateAttributes["email"]);
         return $ValidateAttributes;
     }
 
