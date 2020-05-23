@@ -5,24 +5,38 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\CatEve;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class EventsController extends Controller
 {
     public function index(Request $request){
         if($request->user()->role == "rockstar" || $request->user()->role == "admin"){
-            return Events::all();
+            $events = Events::all();
+            foreach($events as $event){
+                $event = $this->location($event);
+            }
+            return $events;
         }
         else{
-            return Events::where('rockstar', false)->get();
+            $events = Events::where('rockstar', false)->get();
+            foreach($events as $event){
+                $event = $this->location($event);
+            }
+            return $events;
         }
     }
 
     public function preview(){
-        return Events::where('rockstar', false)->get();
+        $events = Events::where('rockstar', false)->get();
+        foreach($events as $event){
+            $event = $this->location($event);
+        }
+        return $events;
     }
 
     public function show($id){
-        return Events::FindOrFail($id);
+        return $this->location(Events::FindOrFail($id));
+
     }
 
     public function create(){
@@ -44,7 +58,8 @@ class EventsController extends Controller
         foreach($ValidateAttributes["categories"] as $category){
             CatEve::create(['event_id' => $event->id, 'category_id' => $category]);
         }
-        return response($event, 201);
+
+        return response($this->location($event), 201);
     }
 
     public function update($id){
@@ -75,7 +90,7 @@ class EventsController extends Controller
         }
 
         if($event->update($ValidateAttributes)){
-            return $event;
+            return $this->location($event);
         }
         else{
             return response($event->id, 400);
@@ -85,6 +100,15 @@ class EventsController extends Controller
     public function remove($id){
         $event = Events::FindOrFail($id);
         $event->delete();
-        return response($event, 200);
+        return response($this->location($event), 200);
+    }
+
+    private function location($event){
+        $response = Http::withHeaders([
+            'token' => '998911cc-e815-41b3-9c33-20369fd6e5c3',
+        ])->get('http://json.api-postcode.nl?postcode='.$event->postal_code);
+        $event['city'] = $response['city'];
+        $event['street'] = $response['street'];
+        return $event;
     }
 }
