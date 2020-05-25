@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Events;
 use App\Tickets;
 use App\CatEve;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
@@ -15,6 +16,8 @@ class EventsController extends Controller
             $events = Events::all();
             foreach($events as $event){
                 $event["available_seats"] = $this->seats($event);
+                $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+                $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
             }
             return $events;
         }
@@ -22,6 +25,8 @@ class EventsController extends Controller
             $events = Events::where('rockstar', false)->get();
             foreach($events as $event){
                 $event["available_seats"] = $this->seats($event);
+                $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+                $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
             }
             return $events;
         }
@@ -31,6 +36,8 @@ class EventsController extends Controller
         $events = Events::where('rockstar', false)->get();
         foreach($events as $event){
             $event["available_seats"] = $this->seats($event);
+            $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+            $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
         }
         return $events;
     }
@@ -38,6 +45,8 @@ class EventsController extends Controller
     public function show($id){
         $event = Events::FindOrFail($id);
         $event["available_seats"] = $this->seats($event);
+        $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+        $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
         return $event;
 
     }
@@ -63,12 +72,16 @@ class EventsController extends Controller
         ])->get('http://json.api-postcode.nl?postcode='.$ValidateAttributes['postal_code']);
         $ValidateAttributes['city'] = $response['city'];
         $ValidateAttributes['street'] = $response['street'];
+        $ValidateAttributes["begin_date"] = Carbon::parse($ValidateAttributes["begin_date"])->format('Y-m-d H:i:s');
+        $ValidateAttributes["end_date"] = Carbon::parse($ValidateAttributes["end_date"])->format('Y-m-d H:i:s');
 
         $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
         foreach($ValidateAttributes["categories"] as $category){
             CatEve::create(['event_id' => $event->id, 'category_id' => $category]);
         }
 
+        $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+        $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
         return response($event, 201);
     }
 
@@ -107,8 +120,18 @@ class EventsController extends Controller
             $ValidateAttributes['street'] = $response['street'];
         }
 
+        if(isset($ValidateAttributes["begin_date"])){
+            $ValidateAttributes["begin_date"] = Carbon::parse($ValidateAttributes["begin_date"])->format('Y-m-d H:i:s');
+        }
+
+        if(isset($ValidateAttributes["end_date"])){
+            $ValidateAttributes["end_date"] = Carbon::parse($ValidateAttributes["end_date"])->format('Y-m-d H:i:s');
+        }
+
         if($event->update($ValidateAttributes)){
             $event["available_seats"] = $this->seats($event);
+            $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+            $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
             return $event;
             
         }
@@ -120,6 +143,8 @@ class EventsController extends Controller
     public function remove($id){
         $event = Events::FindOrFail($id);
         $event->delete();
+        $event["begin_date"] = Carbon::parse($event["begin_date"])->format('Y-m-d H:i:s');
+        $event["end_date"] = Carbon::parse($event["end_date"])->format('Y-m-d H:i:s');
         return response($event, 200);
     }
 
