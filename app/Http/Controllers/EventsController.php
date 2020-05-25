@@ -14,16 +14,14 @@ class EventsController extends Controller
         if($request->user()->role == "rockstar" || $request->user()->role == "admin"){
             $events = Events::all();
             foreach($events as $event){
-                $event = $this->location($event);
-                $event->seats = $this->seats($event);
+                $event["available_seats"] = $this->seats($event);
             }
             return $events;
         }
         else{
             $events = Events::where('rockstar', false)->get();
             foreach($events as $event){
-                $event = $this->location($event);
-                $event->seats = $this->seats($event);
+                $event["available_seats"] = $this->seats($event);
             }
             return $events;
         }
@@ -32,15 +30,14 @@ class EventsController extends Controller
     public function preview(){
         $events = Events::where('rockstar', false)->get();
         foreach($events as $event){
-            $event = $this->location($event);
-            $event->seats = $this->seats($event);
+            $event["available_seats"] = $this->seats($event);
         }
         return $events;
     }
 
     public function show($id){
-        $event = $this->location(Events::FindOrFail($id));
-        $event->seats = $this->seats($event);
+        $event = Events::FindOrFail($id);
+        $event["available_seats"] = $this->seats($event);
         return $event;
 
     }
@@ -60,12 +57,19 @@ class EventsController extends Controller
             'notification' => 'required|boolean',
             'rockstar' => 'required|boolean'
         ]);
+        
+        $response = Http::withHeaders([
+            'token' => '998911cc-e815-41b3-9c33-20369fd6e5c3',
+        ])->get('http://json.api-postcode.nl?postcode='.$ValidateAttributes['postal_code']);
+        $ValidateAttributes['city'] = $response['city'];
+        $ValidateAttributes['street'] = $response['street'];
+
         $event = Events::FindOrFail(Events::create($ValidateAttributes)->id);
         foreach($ValidateAttributes["categories"] as $category){
             CatEve::create(['event_id' => $event->id, 'category_id' => $category]);
         }
 
-        return response($this->location($event), 201);
+        return response($event, 201);
     }
 
     public function update($id){
@@ -95,9 +99,16 @@ class EventsController extends Controller
             }
         }
 
+        if(isset($ValidateAttributes["postal_code"])){
+            $response = Http::withHeaders([
+                'token' => '998911cc-e815-41b3-9c33-20369fd6e5c3',
+            ])->get('http://json.api-postcode.nl?postcode='.$ValidateAttributes['postal_code']);
+            $ValidateAttributes['city'] = $response['city'];
+            $ValidateAttributes['street'] = $response['street'];
+        }
+
         if($event->update($ValidateAttributes)){
-            $event = $this->location($event);
-            $event->seats = $this->seats($event);
+            $event["available_seats"] = $this->seats($event);
             return $event;
             
         }
@@ -109,16 +120,7 @@ class EventsController extends Controller
     public function remove($id){
         $event = Events::FindOrFail($id);
         $event->delete();
-        return response($this->location($event), 200);
-    }
-
-    private function location($event){
-        $response = Http::withHeaders([
-            'token' => '998911cc-e815-41b3-9c33-20369fd6e5c3',
-        ])->get('http://json.api-postcode.nl?postcode='.$event->postal_code);
-        $event['city'] = $response['city'];
-        $event['street'] = $response['street'];
-        return $event;
+        return response($event, 200);
     }
 
     private function seats($event){
