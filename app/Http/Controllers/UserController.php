@@ -144,7 +144,7 @@ class UserController extends Controller
 
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
-            'insertion' => 'max:191|string',
+            'insertion' => 'max:191|nullable|string',
             'last_name' => 'required|max:191|string',
             'email' => 'required|max:191|email:rfc,dns|unique:users,email',
             'postal_code' => 'required|postal_code:NL,BE,DE',
@@ -167,7 +167,7 @@ class UserController extends Controller
 
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
-            'insertion' => 'max:191|string',
+            'insertion' => 'max:191|nullable|string',
             'last_name' => 'required|max:191|string',
             'email' => 'required|max:191|email:rfc,dns|unique:users,email',
             'password' => 'required|max:191|string'
