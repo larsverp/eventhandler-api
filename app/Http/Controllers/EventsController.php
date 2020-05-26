@@ -143,8 +143,8 @@ class EventsController extends Controller
     public function remove($id){
         $event = Events::FindOrFail($id);
         $event->delete();
-        $event["begin_date"] = Carbon::parse($event["begin_date"])->format('Y-m-d H:i:s');
-        $event["end_date"] = Carbon::parse($event["end_date"])->format('Y-m-d H:i:s');
+        $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
+        $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
         return response($event, 200);
     }
 
