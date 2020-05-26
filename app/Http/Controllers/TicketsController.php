@@ -41,7 +41,7 @@ class TicketsController extends Controller
             $m->to($request->user()->email)->subject('Your ticket for '.$event->title);
         });
 
-        $this->pdf($ValidateAttributes["event_id"].'&'.$ValidateAttributes["user_id"], $event, $image, $request->user()->first_name);
+        $this->pdf($ValidateAttributes["event_id"].'|'.$ValidateAttributes["user_id"], $event, $image, $request->user()->first_name);
 
         Points::Hosts('event_subscribe', $event->host_id, $request);
 
@@ -111,7 +111,7 @@ class TicketsController extends Controller
     }
 
     public function download($id, Request $request){
-        $name = $id.'&'.$request->user()->id.'.pdf';
+        $name = $id.'|'.$request->user()->id.'.pdf';
         return response()->download('~/storage/tickets/'.$name, 'Your-ticket.pdf');
     }
 
