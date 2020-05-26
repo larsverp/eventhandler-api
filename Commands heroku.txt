@@ -5,6 +5,15 @@ SECRET COPY
 
 heroku config:set CLIENT_SECRET=[secret] -a=eventhandler-api
 
+
+php artisan passport:client --client
+
+SECRET COPY 
+
+heroku config:set CLIENT2_SECRET=[secret] -a=eventhandler-api
+
+heroku run php artisan ApiKey:create -a=eventhandler-api
+
 heroku run php artisan tinker -a=eventhandler-api
 factory(App\User::class)->create();
 
