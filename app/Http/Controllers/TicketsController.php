@@ -112,7 +112,7 @@ class TicketsController extends Controller
 
     public function download($id, Request $request){
         $name = $id.'&'.$request->user()->id.'.pdf';
-        return response()->download(storage_path().'/tickets/'.$name, 'Your-ticket.pdf');
+        return response()->download(base_path().'/storage/tickets/'.$name, 'Your-ticket.pdf');
     }
 
     private function pdf($name, $event, $qr, $first_name){

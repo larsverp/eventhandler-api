@@ -138,5 +138,4 @@ Route::put('pointsettings', 'PointsSettingsController@update')->middleware(['aut
 #download endpoints
 Route::get('download/ticket/{id}', 'TicketsController@download')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
-    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest'])
-    ->name('ticket');
+    ->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
