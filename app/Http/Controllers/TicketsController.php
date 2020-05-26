@@ -112,11 +112,11 @@ class TicketsController extends Controller
 
     public function download($id, Request $request){
         $name = $id.'&'.$request->user()->id.'.pdf';
-        return response()->download(base_path().'/storage/tickets/'.$name, 'Your-ticket.pdf');
+        return response()->download('~/storage/tickets/'.$name, 'Your-ticket.pdf');
     }
 
     private function pdf($name, $event, $qr, $first_name){
     $pdf = \PDF::loadView('pdfs.pdf', ['qr' => $qr, 'name' => $first_name, 'event'=> $event, 'host'=> Hosts::where('id', $event->host_id)->first()]);
-    $pdf->save(storage_path().'/tickets/'.$name.'.pdf');
+    $pdf->save('~/storage/tickets/'.$name.'.pdf');
   }
 }
