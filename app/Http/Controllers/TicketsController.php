@@ -41,7 +41,7 @@ class TicketsController extends Controller
             $m->to($request->user()->email)->subject('Your ticket for '.$event->title);
         });
 
-        $this->pdf($ValidateAttributes["event_id"].'|'.$ValidateAttributes["user_id"], $event, $image, $request->user()->first_name);
+        //$this->pdf($ValidateAttributes["event_id"].'&'.$ValidateAttributes["user_id"], $event, $image, $request->user()->first_name);
 
         Points::Hosts('event_subscribe', $event->host_id, $request);
 
@@ -63,6 +63,9 @@ class TicketsController extends Controller
 
         if($ticket->user_id == $request->user()->id){
             if($ticket->update($ValidateAttributes)){
+                Mail::send('emails.unsubscribe', ['name' => $request->user()->first_name, 'event'=> $event], function ($m) use ($request, $event){
+                    $m->to($request->user()->email)->subject('Unsubscribed for '.$event->title);
+                });
                 return response()->json([
                     "message" => "Unsubscribed"
                 ], 200);
@@ -111,12 +114,12 @@ class TicketsController extends Controller
     }
 
     public function download($id, Request $request){
-        $name = $id.'|'.$request->user()->id.'.pdf';
-        return response()->download('~/storage/tickets/'.$name, 'Your-ticket.pdf');
+        $name = $id.'&'.$request->user()->id.'.pdf';
+        return response()->download(storage_path().'/tickets/'.$name, 'Your-ticket.pdf');
     }
 
     private function pdf($name, $event, $qr, $first_name){
     $pdf = \PDF::loadView('pdfs.pdf', ['qr' => $qr, 'name' => $first_name, 'event'=> $event, 'host'=> Hosts::where('id', $event->host_id)->first()]);
-    $pdf->save('~/storage/tickets/'.$name.'.pdf');
+    $pdf->save('/tickets/'.$name.'.pdf');
   }
 }
