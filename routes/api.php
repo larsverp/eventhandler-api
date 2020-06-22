@@ -20,7 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 })->name('auth');
 
 #Users endpoints
-Route::post('users/login', 'UserController@check')->middleware('client');
+Route::post('users/login', 'UserController@check')->middleware('client', 'cors');
 Route::get('users/role','UserController@role')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);
 Route::post('users/register', 'UserController@create');
 Route::post('users/validation', 'UserController@validation');
