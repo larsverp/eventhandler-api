@@ -76,15 +76,17 @@ class UserController extends Controller
             'username' => $ValidateAttributes["username"],
             'password' => $ValidateAttributes["password"],
             'client_id' => env('CLIENT_ID', '1'),
-            'client_secret' => env('CLIENT_SECRET', 'JpNSbcXS8v0cvyordqJHMvMBezwZoLx0oPge5LgS'),
+            'client_secret' => env('CLIENT_SECRET', 'qAnQTJ51DDztL0tT7Xad5fZTE317E83uzVylvkZc'),
             'grant_type' => 'password',
             'scope' => $user->role
         ];
 
         $request = app('request')->create('/oauth/token', 'POST', $data);
         $response = app('router')->prepareResponse($request, app()->handle($request));
-
-        return $response;
+        $data = json_decode($response->content(), true); 
+        $data["role"] = $user->role;
+  
+        return $data;
     }
 
     public function role(Request $request){
