@@ -37,8 +37,11 @@ class TicketsController extends Controller
         $event["begin_date"] = Carbon::parse($event["begin_date"])->format('d-m-Y H:i');
         $event["end_date"] = Carbon::parse($event["end_date"])->format('d-m-Y H:i');
 
-        Mail::send('emails.ticket', ['qr' => $image, 'name' => $request->user()->first_name, 'event'=> $event], function ($m) use ($request, $event){
+        $pdf = \PDF::loadView('pdfs.pdf', ['qr' => $image, 'name' => $request->user()->first_name, 'event'=> $event, 'host'=> Hosts::where('id', $event->host_id)->first()])->stream();
+
+        Mail::send('emails.ticket', ['qr' => $image,['pdf'=>$pdf], 'name' => $request->user()->first_name, 'event'=> $event], function ($m) use ($request, $event, $pdf){
             $m->to($request->user()->email)->subject('Your ticket for '.$event->title);
+            $m->attachData($pdf, 'ticket.pdf');
         });
 
         //$this->pdf($ValidateAttributes["event_id"].'&'.$ValidateAttributes["user_id"], $event, $image, $request->user()->first_name);
@@ -117,9 +120,4 @@ class TicketsController extends Controller
         $name = $id.'&'.$request->user()->id.'.pdf';
         return response()->download(storage_path().'/tickets/'.$name, 'Your-ticket.pdf');
     }
-
-    private function pdf($name, $event, $qr, $first_name){
-    $pdf = \PDF::loadView('pdfs.pdf', ['qr' => $qr, 'name' => $first_name, 'event'=> $event, 'host'=> Hosts::where('id', $event->host_id)->first()]);
-    $pdf->save('/tickets/'.$name.'.pdf');
-  }
 }
