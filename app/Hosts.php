@@ -7,7 +7,7 @@ use  Illuminate\Support\Str;
 
 class Hosts extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'description', 'picture'];
+    protected $fillable = ['first_name', 'insertion', 'last_name', 'description', 'picture'];
     protected static function boot()
     {
         parent::boot();
