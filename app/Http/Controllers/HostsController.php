@@ -19,6 +19,7 @@ class HostsController extends Controller
     public function create(){
         $ValidateAttributes = request()->validate([
             'first_name' => 'required|max:191|string',
+            'insertion' => 'max:191|string',
             'last_name' => 'required|max:191|string',
             'description' => 'required|string',
             'picture' => 'required|max:1000|active_url',
@@ -31,6 +32,7 @@ class HostsController extends Controller
         $host = Hosts::FindOrFail($id);
         $ValidateAttributes = request()->validate([
             'first_name' => 'max:191|string',
+            'insertion' => 'max:191|string',
             'last_name' => 'max:191|string',
             'description' => 'string',
             'picture' => 'max:1000|active_url',

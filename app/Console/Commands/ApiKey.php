@@ -40,7 +40,7 @@ class ApiKey extends Command
         $data = [
             'grant_type' => 'client_credentials',
             'client_id' => env('CLIENT2_ID', '2'),
-            'client_secret' => env('CLIENT2_SECRET', 'OY7iuNJtXVssXQ4RjmmRGiwRmTIDxJgheLwRZBHp'),
+            'client_secret' => env('CLIENT2_SECRET', 'rsK7oslkgMDZGVsiqXmDgh6ENN6i9AThE5TmrTol'),
         ];
 
         $request = app('request')->create('/oauth/token', 'POST', $data);
