@@ -64,6 +64,8 @@ Route::delete('mails/{id}', 'MailsController@remove')
     ->where('id', '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$')
     ->middleware(['auth:api', 'scope:admin']);
 Route::post('mails/verify', 'MailsController@verify');
+Route::post('mails/reminder', 'MailsController@reminderEmail')->middleware(['auth:api', 'scope:admin']);
+Route::post('mails/interest', 'MailsController@reminderEmail')->middleware(['auth:api', 'scope:admin']);
 
 #Favorite endpoints
 Route::get('favorites', 'FavoritesController@show')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);

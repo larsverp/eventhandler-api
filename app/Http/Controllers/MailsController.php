@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Mails;
 use App\User;
 use Mail;
+use App\Events;
+use Illuminate\Support\Carbon;
+use App\Tickets;
 use Illuminate\Http\Request;
 
 class MailsController extends Controller
@@ -78,4 +81,22 @@ class MailsController extends Controller
         });
         return response($email, 201);
     }
+
+    public function reminderEmail(){
+        $gifs = array("https://media.giphy.com/media/9u514UZd57mRhnBCEk/giphy.gif", "https://media.giphy.com/media/26n6xBpxNXExDfuKc/giphy.gif", "https://media.giphy.com/media/QBd2kLB5qDmysEXre9/giphy.gif", "https://media.giphy.com/media/26Do6la9cIiHvIwMM/giphy.gif", "https://media.giphy.com/media/JzOyy8vKMCwvK/giphy.gif", "https://media.giphy.com/media/3o751ZKB91R8ZvMvde/giphy.gif");
+
+        $events = Events::whereDate('begin_date', '=', Carbon::tomorrow()->toDateString())->get();
+        foreach($events as $event){
+            $tickets = Tickets::where('event_id', $event->id)->get();
+            foreach($tickets as $ticket){
+                $user = User::where('id', $ticket->user_id)->first();
+                $gif = $gifs[rand(0,5)];
+                $email = Mail::send('emails.reminder', ['user' => $user, 'event' => $event, 'gif' => $gif], function ($m) use ($user){
+                    $m->to($user["email"])->subject('Event reminder');
+                });
+            }
+        }
+    }
+
+
 }
