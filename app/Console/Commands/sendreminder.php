@@ -49,9 +49,10 @@ class sendreminder extends Command
                 $tickets = Tickets::where('event_id', $event->id)->get();
                 foreach($tickets as $ticket){
                     $user = User::where('id', $ticket->user_id)->first();
+                    print_r("User: ".$user->id);
                     $gif = $gifs[rand(0,5)];
                     $email = Mail::send('emails.reminder', ['user' => $user, 'event' => $event, 'gif' => $gif], function ($m) use ($user){
-                        $m->to($user["email"])->subject('Event reminder');
+                        $m->to($user->email)->subject('Event reminder');
                     });
                 }
             }
