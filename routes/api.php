@@ -66,6 +66,7 @@ Route::delete('mails/{id}', 'MailsController@remove')
 Route::post('mails/verify', 'MailsController@verify');
 Route::post('mails/reminder', 'MailsController@reminderEmail')->middleware(['auth:api', 'scope:admin']);
 Route::post('mails/interest', 'MailsController@reminderEmail')->middleware(['auth:api', 'scope:admin']);
+Route::post('mails/review', 'MailsController@reviewMail')->middleware(['auth:api', 'scope:admin']);
 
 #Favorite endpoints
 Route::get('favorites', 'FavoritesController@show')->middleware(['auth:api', 'scope:admin,rockstar,partner,guest']);

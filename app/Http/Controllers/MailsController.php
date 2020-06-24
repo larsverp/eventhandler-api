@@ -98,5 +98,18 @@ class MailsController extends Controller
         }
     }
 
-
+    public function reviewMail(){
+        $events = Events::whereDate('end_date', '=', Carbon::yesterday()->toDateString())->get();
+        foreach($events as $event){
+            $tickets = Tickets::where('event_id', $event->id)
+                                ->where('scanned', true)
+                                ->get();
+            foreach($tickets as $ticket){
+                $user = User::where('id', $ticket->user_id)->first();
+                $email = Mail::send('emails.review', ['user' => $user, 'event' => $event], function ($m) use ($user){
+                    $m->to($user["email"])->subject('How did we do?');
+                });
+            }
+        }
+    }
 }
